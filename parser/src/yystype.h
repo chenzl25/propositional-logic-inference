@@ -1,0 +1,18 @@
+#ifndef YYSTYPE_H
+#define YYSTYPE_H
+
+#include <string>
+using namespace std;
+
+//==== default YYSTYPE =====
+typedef union YYSTYPE
+{
+    // three default type
+    int          int_value;
+    double       double_value;
+    string       *string_value;
+    // below comment use to inject the union from .bnf file
+/*%union*/
+};
+
+#endif

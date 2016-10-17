@@ -1,0 +1,118 @@
+# -----------------------------------------------------------------
+# union have default : type string_value
+# -----------------------------------------------------------------
+
+%include {
+  #include <vector>
+  #include "../../extend/create.h"
+  #include "../../extend/Logic.h"
+  #include "../../extend/logic_class.h"
+}
+
+%union {
+    // string       *string_value;
+    SymbolList      *symbol_list;
+    RelationList    *relation_list;
+    Sentence        *sentence;
+}
+
+%token <string_value> identifier
+%type <symbol_list> symbol_list symbols_stmt
+%type <relation_list> relation_list relations_stmt
+%type <sentence> sentence atomic_sentence complex_sentence KB_stmt alpha_stmt
+
+
+$ translation_unit    : symbols_stmt relations_stmt KB_stmt alpha_stmt
+                      {
+                        Logic::Interpreter *inter = Logic::Interpreter::getInstance();
+                        inter->setup($1, $2, $3, $4);
+                      }
+                      ;
+
+$ symbols_stmt        : 'symbols' ':' symbol_list ';'
+                      {
+                        $$ = $3;
+                      }
+                      | 'symbols' ':' ';'
+                      {
+                        $$ = NULL;
+                      }
+                      ;
+
+$ symbol_list         : identifier
+                      {
+                        $$ = logic_create_symbol_list($1);
+                      }
+                      | symbol_list ',' identifier
+                      {
+                        $$ = logic_chain_symbol_list($1, $3);
+                      }
+                      ;
+
+$ relations_stmt      : 'relations' ':' relation_list
+                      {
+                        $$ = $3;
+                      }
+                      | 'relations' ':'
+                      {
+                        $$ = NULL;
+                      }
+                      ;
+
+$ relation_list       : identifier ':=' sentence ';' 
+                      {
+                        $$ = logic_create_relation_list($1, $3);
+                      }
+                      | relation_list identifier ':=' sentence ';'
+                      {
+                        $$ = logic_create_relation_list($1, $2, $4);
+                      }
+                      ;
+
+$ KB_stmt             : 'KB' ':' sentence ';'
+                      {
+                        $$ = $3;
+                      }
+                      ;
+
+$ alpha_stmt          : 'alpha' ':' sentence ';'
+                      {
+                        $$ = $3;
+                      }
+                      ;
+
+$ sentence            : atomic_sentence 
+                      | complex_sentence
+                      ;
+
+$ atomic_sentence     : identifier
+                      {
+                        $$ = logic_create_atomic_sentence($1);
+                      }
+                      ;
+
+$ complex_sentence    : '(' sentence ')'
+                      {
+                        $$ = $2;
+                      }
+                      | '!' sentence
+                      {
+                        $$ = logic_create_logical_not_sentence($2);
+                      }
+                      | sentence '&' sentence
+                      {
+                        $$ = logic_create_logical_and_sentence($1, $3);
+                      }
+                      | sentence '|' sentence           
+                      {
+                        $$ = logic_create_logical_or_sentence($1, $3);
+                      }
+                      | sentence '=>' sentence
+                      {
+                        $$ = logic_create_logical_imply_sentence($1, $3);
+                      }
+                      | sentence '<=>' sentence
+                      {
+                        $$ = logic_create_logical_equal_sentence($1, $3);
+                      }
+                      ;
