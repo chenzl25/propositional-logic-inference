@@ -40,6 +40,6 @@ mylex.set_string_distincter('\"');
   Logic::Interpreter::getInstance()->set_lexer(mylex);
   Logic::Interpreter::getInstance()->set_parsr(slr);
   Logic::Interpreter::getInstance()->parse(code_path);
-  // Logic::Interpreter::getInstance()->execute();
-  // Logic::Interpreter::getInstance()->dealloc();
+  Logic::Interpreter::getInstance()->execute();
+  Logic::Interpreter::getInstance()->dealloc();
 }

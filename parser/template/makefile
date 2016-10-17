@@ -15,6 +15,7 @@ SRCS += lexer/src/lex.cpp
 SRCS += extend/logic_class.cpp
 SRCS += extend/Logic.cpp
 SRCS += extend/create.cpp
+SRCS += extend/execute.cpp
 
 OBJS=$(SRCS:.cpp=.o)
 
@@ -49,6 +50,8 @@ logic_class.o:  extend/logic_class.h
 create.o:   extend/create.h
 
 Logic.o:      extend/Logic.h
+
+execute.o:  extend/execute.h
 
 clean:
 	-rm -f $(OBJS) dcompile

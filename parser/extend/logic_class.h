@@ -2,93 +2,120 @@
 #define LOGIC_CLASS_H
 #include <string>
 #include <vector>
+#include <map>
+#include <set>
 
 class SymbolList {
-public:  
+ public:  
   SymbolList();
   ~SymbolList();
   void add_symbol(std::string* symbol);
   std::vector<std::string*> _symbol_vec;
-private:
+ private:
 };
 
 class Sentence;
 class Relation {
-public:  
+ public:  
   Relation(std::string* symbol, Sentence* sentence);
   ~Relation();
   std::string* _symbol;
   Sentence* _sentence;
-private:
+ private:
 };
 
 class RelationList {
-public:  
+ public:  
   RelationList();
   ~RelationList();
   void add_relation(std::string* symbol, Sentence* sentence);
-  std::vector<std::string*> _relation_vec;
-private:
+  std::vector<Relation*> _relation_vec;
+ private:
 };
 
-
+class Model;
 class Sentence {
-public:
+ public:
   Sentence();
   virtual ~Sentence() = default;
-private:
+  virtual bool check(Model& model);
+  virtual bool check(std::set<std::string>& symbol_set);
+ private:
 };
 
 class AtomicSentence : public Sentence {
-public:
+ public:
   AtomicSentence(std::string* symbol);
   virtual ~AtomicSentence();
+  virtual bool check(Model& model);
+  virtual bool check(std::set<std::string>& symbol_set);
   std::string* _symbol;
-private:
+ private:
 };
 
 class NotSentence : public Sentence {
-public:
+ public:
   NotSentence(Sentence* sentence);
   virtual ~NotSentence();
+  virtual bool check(Model& model);
+  virtual bool check(std::set<std::string>& symbol_set);
   Sentence* _sentence;
-private:
+ private:
 };
 
 class AndSentence : public Sentence {
-public:
+ public:
   AndSentence(Sentence* sentence1, Sentence* sentence2);
   virtual ~AndSentence();
+  virtual bool check(Model& model);
+  virtual bool check(std::set<std::string>& symbol_set);
   Sentence* _sentence1;
   Sentence* _sentence2;
-private:
+ private:
 };
 
 class OrSentence : public Sentence {
-public:
+ public:
   OrSentence(Sentence* sentence1, Sentence* sentence2);
   virtual ~OrSentence();
+  virtual bool check(Model& model);
+  virtual bool check(std::set<std::string>& symbol_set);
   Sentence* _sentence1;
   Sentence* _sentence2;
-private:
+ private:
 };
 
 class ImplySentence : public Sentence {
-public:
+ public:
   ImplySentence(Sentence* sentence1, Sentence* sentence2);
   virtual ~ImplySentence();
+  virtual bool check(Model& model);
+  virtual bool check(std::set<std::string>& symbol_set);
   Sentence* _sentence1;
   Sentence* _sentence2;
-private:
+ private:
 };
 
 class EqualSentence : public Sentence {
-public:
+ public:
   EqualSentence(Sentence* sentence1, Sentence* sentence2);
   virtual ~EqualSentence();
+  virtual bool check(Model& model);
+  virtual bool check(std::set<std::string>& symbol_set);
   Sentence* _sentence1;
   Sentence* _sentence2;
-private:
+ private:
+};
+
+class Model {
+ public:
+  Model();
+  Model(Model& another_model);
+  Model(SymbolList* symbol_list);
+  ~Model();
+  void induce(RelationList* relation_list);
+  std::map<std::string, bool> _m;
+ private:
 };
 
 #endif
