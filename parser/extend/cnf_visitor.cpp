@@ -16,15 +16,17 @@ Sentence* CNFVisitor::visit(NotSentence* not_sentence) {
 	} else if (AND  == not_sentence->_sentence->type()) {
 		AndSentence* sub = dynamic_cast<AndSentence*>(not_sentence->_sentence);
 		Sentence* s1, *s2;
-		s1 = sub->_sentence1;
-		s2 = sub->_sentence2;
-		result = new OrSentence(new NotSentence(s1), new NotSentence(s2));
+		s1 = sub->_sentence1->accept(this);
+		s2 = sub->_sentence2->accept(this);
+		result = new OrSentence((new NotSentence(s1))->accept(this), 
+														(new NotSentence(s2))->accept(this));
 	} else if (OR == not_sentence->_sentence->type()) {
 		OrSentence* sub = dynamic_cast<OrSentence*>(not_sentence->_sentence);
 		Sentence *s1, *s2;
-		s1 = sub->_sentence1;
-		s2 = sub->_sentence2;
-		result = new AndSentence(new NotSentence(s1), new NotSentence(s2));
+		s1 = sub->_sentence1->accept(this);
+		s2 = sub->_sentence2->accept(this);
+		result = new AndSentence((new NotSentence(s1))->accept(this), 
+														(new NotSentence(s2))->accept(this));
 	} else if (ATOMIC == not_sentence->_sentence->type()) {
 		return not_sentence;
 	} else {

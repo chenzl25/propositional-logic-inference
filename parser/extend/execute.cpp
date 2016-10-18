@@ -77,9 +77,9 @@ bool resolution(SymbolList* symbol_list,
 							  Sentence* alpha) {
 	replace_with_relation_list(KB, relation_list);
 	replace_with_relation_list(alpha, relation_list);
-	// Sentence* cnf = cnfize(new AndSentence(KB, new NotSentence(alpha)));
+	Sentence* cnf = cnfize(new AndSentence(KB, new NotSentence(alpha)));
 	PrintVisitor pv;
-	cnfize(alpha)->accept(&pv);
+	cnf->accept(&pv);
 	// cnfize(new NotSentence(new AtomicSentence(new std::string("A"))))->accept(&pv);
 	// cnfize(new NotSentence(new AndSentence(new AtomicSentence(new std::string("A")), new AtomicSentence(new std::string("B")))))->accept(&pv);
 }
