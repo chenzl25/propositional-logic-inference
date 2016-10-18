@@ -8,4 +8,9 @@ bool tt_entails(SymbolList* symbol_list,
 							  Sentence* KB, 
 							  Sentence* alpha);
 
+bool resolution(SymbolList* symbol_list, 
+							  RelationList* relation_list, 
+							  Sentence* KB, 
+							  Sentence* alpha);
+
 #endif

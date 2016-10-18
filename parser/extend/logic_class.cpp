@@ -1,4 +1,5 @@
 #include "logic_class.h"
+#include "visitor.h"
 
 SymbolList::SymbolList() {
 
@@ -56,6 +57,13 @@ bool Sentence::check(Model& model) {
 bool Sentence::check(std::set<std::string>& symbol_set) {
 
 }
+Sentence* Sentence::accept(Visitor* v) {
+	return NULL;
+}
+SentenceType Sentence::type() {
+
+}
+
 AtomicSentence::AtomicSentence(std::string* symbol) {
 	_symbol = symbol;
 }
@@ -70,6 +78,12 @@ bool AtomicSentence::check(Model& model) {
 }
 bool AtomicSentence::check(std::set<std::string>& symbol_set) {
 	return symbol_set.count(*_symbol) == 1;
+}
+Sentence* AtomicSentence::accept(Visitor* v) {
+  return v->visit(this);
+}
+SentenceType AtomicSentence::type() {
+	return ATOMIC;
 }
 
 NotSentence::NotSentence(Sentence* sentence) {
@@ -86,6 +100,12 @@ bool NotSentence::check(Model& model) {
 }
 bool NotSentence::check(std::set<std::string>& symbol_set) {
 	return _sentence->check(symbol_set);
+}
+Sentence* NotSentence::accept(Visitor* v) {
+  return v->visit(this);
+}
+SentenceType NotSentence::type() {
+	return NOT;
 }
 
 AndSentence::AndSentence(Sentence* sentence1, Sentence* sentence2) {
@@ -108,6 +128,13 @@ bool AndSentence::check(Model& model) {
 bool AndSentence::check(std::set<std::string>& symbol_set) {
 	return _sentence1->check(symbol_set) && _sentence2->check(symbol_set);
 }
+Sentence* AndSentence::accept(Visitor* v) {
+  return v->visit(this);
+}
+SentenceType AndSentence::type() {
+	return AND;
+}
+
 
 OrSentence::OrSentence(Sentence* sentence1, Sentence* sentence2) {
 	_sentence1 = sentence1;
@@ -129,6 +156,13 @@ bool OrSentence::check(Model& model) {
 bool OrSentence::check(std::set<std::string>& symbol_set) {
 	return _sentence1->check(symbol_set) && _sentence2->check(symbol_set);
 }
+Sentence* OrSentence::accept(Visitor* v) {
+  return v->visit(this);
+}
+SentenceType OrSentence::type() {
+	return OR;
+}
+
 
 ImplySentence::ImplySentence(Sentence* sentence1, Sentence* sentence2) {
 	_sentence1 = sentence1;
@@ -150,6 +184,13 @@ bool ImplySentence::check(Model& model) {
 bool ImplySentence::check(std::set<std::string>& symbol_set) {
 	return _sentence1->check(symbol_set) && _sentence2->check(symbol_set);
 }
+Sentence* ImplySentence::accept(Visitor* v) {
+  return v->visit(this);
+}
+SentenceType ImplySentence::type() {
+	return IMPLY;
+}
+
 
 EqualSentence::EqualSentence(Sentence* sentence1, Sentence* sentence2) {
 	_sentence1 = sentence1;
@@ -170,6 +211,12 @@ bool EqualSentence::check(Model& model) {
 }
 bool EqualSentence::check(std::set<std::string>& symbol_set) {
 	return _sentence1->check(symbol_set) && _sentence2->check(symbol_set);
+}
+Sentence* EqualSentence::accept(Visitor* v) {
+  return v->visit(this);
+}
+SentenceType EqualSentence::type() {
+	return EQUAL;
 }
 
 

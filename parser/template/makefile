@@ -16,6 +16,11 @@ SRCS += extend/logic_class.cpp
 SRCS += extend/Logic.cpp
 SRCS += extend/create.cpp
 SRCS += extend/execute.cpp
+SRCS += extend/visitor.cpp
+SRCS += extend/replace_visitor.cpp
+SRCS += extend/clone_visitor.cpp
+SRCS += extend/cnf_visitor.cpp
+SRCS += extend/print_visitor.cpp
 
 OBJS=$(SRCS:.cpp=.o)
 
@@ -52,6 +57,16 @@ create.o:   extend/create.h
 Logic.o:      extend/Logic.h
 
 execute.o:  extend/execute.h
+
+visitor.o:  extend/visitor.h
+
+replace_visitor.o:  extend/replace_visitor.h
+
+clone_visitor.o:  extend/clone_visitor.h
+
+cnf_visitor.o:  extend/cnf_visitor.h
+
+print_visitor.o:  extend/print_visitor.h
 
 clean:
 	-rm -f $(OBJS) dcompile

@@ -5,6 +5,7 @@
 #include <map>
 #include <set>
 
+class Visitor;
 class SymbolList {
  public:  
   SymbolList();
@@ -33,6 +34,10 @@ class RelationList {
  private:
 };
 
+enum SentenceType {
+  ATOMIC = 1, NOT, AND , OR, IMPLY, EQUAL
+};
+
 class Model;
 class Sentence {
  public:
@@ -40,6 +45,8 @@ class Sentence {
   virtual ~Sentence() = default;
   virtual bool check(Model& model);
   virtual bool check(std::set<std::string>& symbol_set);
+  virtual Sentence* accept(Visitor* v);
+  virtual SentenceType type();
  private:
 };
 
@@ -49,6 +56,8 @@ class AtomicSentence : public Sentence {
   virtual ~AtomicSentence();
   virtual bool check(Model& model);
   virtual bool check(std::set<std::string>& symbol_set);
+  virtual Sentence* accept(Visitor* v);
+  virtual SentenceType type();
   std::string* _symbol;
  private:
 };
@@ -59,6 +68,8 @@ class NotSentence : public Sentence {
   virtual ~NotSentence();
   virtual bool check(Model& model);
   virtual bool check(std::set<std::string>& symbol_set);
+  virtual Sentence* accept(Visitor* v);
+  virtual SentenceType type();
   Sentence* _sentence;
  private:
 };
@@ -69,6 +80,8 @@ class AndSentence : public Sentence {
   virtual ~AndSentence();
   virtual bool check(Model& model);
   virtual bool check(std::set<std::string>& symbol_set);
+  virtual Sentence* accept(Visitor* v);
+  virtual SentenceType type();
   Sentence* _sentence1;
   Sentence* _sentence2;
  private:
@@ -80,6 +93,8 @@ class OrSentence : public Sentence {
   virtual ~OrSentence();
   virtual bool check(Model& model);
   virtual bool check(std::set<std::string>& symbol_set);
+  virtual Sentence* accept(Visitor* v);
+  virtual SentenceType type();
   Sentence* _sentence1;
   Sentence* _sentence2;
  private:
@@ -91,6 +106,8 @@ class ImplySentence : public Sentence {
   virtual ~ImplySentence();
   virtual bool check(Model& model);
   virtual bool check(std::set<std::string>& symbol_set);
+  virtual Sentence* accept(Visitor* v);
+  virtual SentenceType type();
   Sentence* _sentence1;
   Sentence* _sentence2;
  private:
@@ -102,6 +119,8 @@ class EqualSentence : public Sentence {
   virtual ~EqualSentence();
   virtual bool check(Model& model);
   virtual bool check(std::set<std::string>& symbol_set);
+  virtual Sentence* accept(Visitor* v);
+  virtual SentenceType type();
   Sentence* _sentence1;
   Sentence* _sentence2;
  private:

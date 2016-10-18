@@ -11,22 +11,22 @@ Interpreter* Interpreter::_instance = NULL;
 Interpreter::Interpreter() {
 }
 Interpreter::~Interpreter() { // order is importance
-  if (_symbol_list != NULL) {
-    delete _symbol_list;
-    _symbol_list = NULL;
-  }
-  if (_relation_list != NULL) {
-    delete _relation_list;
-    _relation_list = NULL;
-  }
-  if (_KB != NULL) {
-    delete _KB;
-    _KB = NULL;
-  }
-  if (_alpha != NULL) {
-    delete _alpha;
-    _alpha = NULL;
-  }
+  // if (_symbol_list != NULL) {
+  //   delete _symbol_list;
+  //   _symbol_list = NULL;
+  // }
+  // if (_relation_list != NULL) {
+  //   delete _relation_list;
+  //   _relation_list = NULL;
+  // }
+  // if (_KB != NULL) {
+  //   delete _KB;
+  //   _KB = NULL;
+  // }
+  // if (_alpha != NULL) {
+  //   delete _alpha;
+  //   _alpha = NULL;
+  // }
 }
 
 void Interpreter::setup(SymbolList* symbol_list, 
@@ -64,14 +64,6 @@ void Interpreter::parse(string code_path) {
   _slr.parse(_lex);
 }
 
-void Interpreter::execute() {
-  // from excute.h
-  if (!semantic_check()) {
-    return;
-  }
-  tt_entails(_symbol_list, _relation_list, _KB, _alpha);
-}
-
 bool Interpreter::semantic_check() {
   set<std::string> symbol_set;
   for (int i = 0; i < _symbol_list->_symbol_vec.size(); i++) {
@@ -97,6 +89,15 @@ bool Interpreter::semantic_check() {
     }
   }
   return true;
+}
+
+void Interpreter::execute() {
+  // from excute.h
+  if (!semantic_check()) {
+    return;
+  }
+  // tt_entails(_symbol_list, _relation_list, _KB, _alpha);
+  resolution(_symbol_list, _relation_list, _KB, _alpha);
 }
 
 } // end of namespace Logic
