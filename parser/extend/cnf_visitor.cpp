@@ -30,8 +30,8 @@ Sentence* CNFVisitor::visit(NotSentence* not_sentence) {
 	} else if (ATOMIC == not_sentence->_sentence->type()) {
 		return not_sentence;
 	} else {
-		// impossible case
-		std::cout << "impossible case #NotSentence " << not_sentence->_sentence->type() << std::endl;
+		not_sentence->_sentence = not_sentence->_sentence->accept(this);
+		result = not_sentence;
 	}
 
 	result = result->accept(this);

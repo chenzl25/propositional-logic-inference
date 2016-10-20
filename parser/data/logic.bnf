@@ -35,13 +35,14 @@ $ symbols_stmt        : 'symbols' ':' symbol_list ';'
                       }
                       | 'symbols' ':' ';'
                       {
-                        $$ = NULL;
+                        $$ = logic_create_symbol_list();
                       }
                       ;
 
 $ symbol_list         : identifier
                       {
-                        $$ = logic_create_symbol_list($1);
+                        $$ = logic_create_symbol_list();
+                        $$ = logic_chain_symbol_list($$, $1);
                       }
                       | symbol_list ',' identifier
                       {
@@ -55,17 +56,18 @@ $ relations_stmt      : 'relations' ':' relation_list
                       }
                       | 'relations' ':'
                       {
-                        $$ = NULL;
+                        $$ = logic_create_relation_list();
                       }
                       ;
 
 $ relation_list       : identifier ':=' sentence ';' 
                       {
-                        $$ = logic_create_relation_list($1, $3);
+                        $$ = logic_create_relation_list();
+                        $$ = logic_chain_relation_list($$, $1, $3);
                       }
                       | relation_list identifier ':=' sentence ';'
                       {
-                        $$ = logic_create_relation_list($1, $2, $4);
+                        $$ = logic_chain_relation_list($1, $2, $4);
                       }
                       ;
 

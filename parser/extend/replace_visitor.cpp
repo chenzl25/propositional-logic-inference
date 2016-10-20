@@ -14,37 +14,29 @@ Sentence* ReplaceVisitor::visit(AtomicSentence* atomic_sentence) {
 			return ptr->_sentence->accept(&cv);
 		}
 	}
-	return NULL;
+	return atomic_sentence;
 }
 Sentence* ReplaceVisitor::visit(NotSentence* not_sentence) {
-	Sentence* s = not_sentence->_sentence->accept(this);
-	if (s != NULL) not_sentence->_sentence = s;
+	not_sentence->_sentence = not_sentence->_sentence->accept(this);
+	return not_sentence;
 }
 Sentence* ReplaceVisitor::visit(AndSentence* and_sentence) {
-	Sentence* s;
-	s = and_sentence->_sentence1->accept(this);
-	if (s != NULL) and_sentence->_sentence1 = s;
-	s = and_sentence->_sentence2->accept(this);
-	if (s != NULL) and_sentence->_sentence2 = s;
+	and_sentence->_sentence1 = and_sentence->_sentence1->accept(this);
+	and_sentence->_sentence2 = and_sentence->_sentence2->accept(this);
+	return and_sentence;
 }
 Sentence* ReplaceVisitor::visit(OrSentence* or_sentence) {
-	Sentence* s;
-	s = or_sentence->_sentence1->accept(this);
-	if (s != NULL) or_sentence->_sentence1 = s;
-	s = or_sentence->_sentence2->accept(this);
-	if (s != NULL) or_sentence->_sentence2 = s;
+	or_sentence->_sentence1 = or_sentence->_sentence1->accept(this);
+	or_sentence->_sentence2 = or_sentence->_sentence2->accept(this);
+	return or_sentence;
 }
 Sentence* ReplaceVisitor::visit(ImplySentence* imply_sentence) {
-	Sentence* s;
-	s = imply_sentence->_sentence1->accept(this);
-	if (s != NULL) imply_sentence->_sentence1 = s;
-	s = imply_sentence->_sentence2->accept(this);
-	if (s != NULL) imply_sentence->_sentence2 = s;
+	imply_sentence->_sentence1 = imply_sentence->_sentence1->accept(this);
+	imply_sentence->_sentence2 = imply_sentence->_sentence2->accept(this);
+	return imply_sentence;
 }
 Sentence* ReplaceVisitor::visit(EqualSentence* equal_sentence) {
-	Sentence* s;
-	s = equal_sentence->_sentence1->accept(this);
-	if (s != NULL) equal_sentence->_sentence1 = s;
-	s = equal_sentence->_sentence2->accept(this);
-	if (s != NULL) equal_sentence->_sentence2 = s;
+	equal_sentence->_sentence1 = equal_sentence->_sentence1->accept(this);
+	equal_sentence->_sentence2 = equal_sentence->_sentence2->accept(this);
+	return equal_sentence;
 }

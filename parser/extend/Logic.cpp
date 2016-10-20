@@ -96,8 +96,8 @@ void Interpreter::execute() {
   if (!semantic_check()) {
     return;
   }
-  // tt_entails(_symbol_list, _relation_list, _KB, _alpha);
-  resolution(_symbol_list, _relation_list, _KB, _alpha);
+  std::cout << "result: " << tt_entails(_symbol_list, _relation_list, _KB, _alpha) << std::endl;
+  std::cout << "result: " << resolution(_symbol_list, _relation_list, _KB, _alpha) << std::endl;
 }
 
 } // end of namespace Logic

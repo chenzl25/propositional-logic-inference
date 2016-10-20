@@ -21,6 +21,7 @@ SRCS += extend/replace_visitor.cpp
 SRCS += extend/clone_visitor.cpp
 SRCS += extend/cnf_visitor.cpp
 SRCS += extend/print_visitor.cpp
+SRCS += extend/clauses_visitor.cpp
 
 OBJS=$(SRCS:.cpp=.o)
 
@@ -67,6 +68,8 @@ clone_visitor.o:  extend/clone_visitor.h
 cnf_visitor.o:  extend/cnf_visitor.h
 
 print_visitor.o:  extend/print_visitor.h
+
+clasuse_visitor.o: extend/clasuse_visitor.h
 
 clean:
 	-rm -f $(OBJS) dcompile
