@@ -46,6 +46,8 @@ Sentence* CNFVisitor::visit(AndSentence* and_sentence) {
 Sentence* CNFVisitor::visit(OrSentence* or_sentence) {
 	// std::cout << "|" << std::endl;
 	Sentence *s1, *s2, *s11, *s22, *result;
+	or_sentence->_sentence1 = or_sentence->_sentence1->accept(this);
+	or_sentence->_sentence2 = or_sentence->_sentence2->accept(this);
 	s1 = or_sentence->_sentence1;
 	s2 = or_sentence->_sentence2;
 	CloneVisitor cv;

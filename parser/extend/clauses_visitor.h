@@ -23,6 +23,7 @@ class ClausesVisitor : public Visitor {
 	virtual Sentence* visit(OrSentence* or_sentence);
 	virtual Sentence* visit(ImplySentence* imply_sentence);
 	virtual Sentence* visit(EqualSentence* equal_sentence);
+	Clauses get_clauses();
 	Clauses _clauses;
 	Clause _cur_clause;
 };

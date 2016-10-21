@@ -183,7 +183,7 @@ bool resolution(SymbolList* symbol_list,
 	Sentence* cnf = cnfize(new AndSentence(KB, new NotSentence(alpha)));
 	cnf->accept(&cv);
 	// cnf->accept(&pv);
-	clauses = cv._clauses;
+	clauses = cv.get_clauses();
 	print_clauses(clauses);
 	while (true) {
 		std::cout << clauses.size() << std::endl;

@@ -30,3 +30,11 @@ Sentence* ClausesVisitor::visit(ImplySentence* imply_sentence) {
 Sentence* ClausesVisitor::visit(EqualSentence* equal_sentence) {
 	std::cout << "ClausesVisitor error in EqualSentence" << std::endl;
 }
+
+Clauses ClausesVisitor::get_clauses() {
+	if (!_cur_clause.empty()) {
+		_clauses.insert(_cur_clause);
+		_cur_clause.clear();
+	}
+	return _clauses;
+}
