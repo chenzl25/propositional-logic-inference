@@ -150,13 +150,13 @@ void Yacc::_fill_template() {
   system("mkdir -p dist/data");
   system("mkdir -p dist/lexer/src");
   system("mkdir -p dist/extend");
-  system("cp ../lexer/src/* dist/lexer/src");
-  system("rm  dist/lexer/src/*.o");
-  system("cp src/* dist/parser/src");
+  system("cp lexer/src/* dist/lexer/src");
+  system("rm dist/lexer/src/*.o");
+  system("cp parser/src/* dist/parser/src");
   system("rm dist/parser/src/*.o");
   system("rm dist/parser/src/main.cpp");
   system("cp template/makefile dist");
-  system("cp data/* dist/data");
+  system("cp parser/data/* dist/data");
   system("cp extend/* dist/extend");
   _fill_yystype();
   _fill_action();

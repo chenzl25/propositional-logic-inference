@@ -8,9 +8,9 @@
 #include "slr.h"
 using namespace std;
 int main(int argc, char** argv) {
-  string lex_rule_path = "data/logic.lex";
-  string code_path     = "data/logic.code";
-  string bnf_rule_path = "data/logic.bnf";
+  string lex_rule_path = "parser/data/logic.lex";
+  string code_path     = "parser/data/logic.code";
+  string bnf_rule_path = "parser/data/logic.bnf";
   for (int i = 1; i < argc;) {
     if (strcmp(argv[i],"-lex") == 0) {
       lex_rule_path = argv[i+1];
