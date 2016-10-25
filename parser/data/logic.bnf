@@ -1,7 +1,9 @@
 # -----------------------------------------------------------------
-# union have default : type string_value
+# union have default : type string_value, int_value, double_value
 # -----------------------------------------------------------------
 
+
+# [%include] will used in "template/yystype.template"
 %include {
   #include <vector>
   #include "../../extend/create.h"
@@ -9,12 +11,23 @@
   #include "../../extend/logic_class.h"
 }
 
+# [%union] will used in "template/yystype.template"
 %union {
+    // int          int_value;
+    // double       double_value;
     // string       *string_value;
     SymbolList      *symbol_list;
     RelationList    *relation_list;
     Sentence        *sentence;
 }
+
+# ---------------------------------
+# when [name] hasn't occur in the head of bnf_rule, [%token] should be used
+# [%token] [type] [name]...     
+
+# when [name] has occur in the head of bnf_rule, [%type] should be used
+# [%type]  [type] [name]...     
+# ---------------------------------
 
 %token <string_value> identifier
 %type <symbol_list> symbol_list symbols_stmt

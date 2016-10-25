@@ -13,4 +13,9 @@ bool resolution(SymbolList* symbol_list,
 							  Sentence* KB, 
 							  Sentence* alpha);
 
+bool forward_chaining(SymbolList* symbol_list, 
+										  RelationList* relation_list, 
+										  Sentence* KB, 
+										  Sentence* alpha);
+
 #endif

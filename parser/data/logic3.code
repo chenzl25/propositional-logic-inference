@@ -1,0 +1,21 @@
+# to test forward-chaining
+# in forward-chaining case relations should only contain
+# ImplySentence, AtomicSentence, AndSentence
+# ImplySentence stands for rule
+# AtomicSentence, AndSentence are stand for truth of KB
+# KB actually has no impact on forward-chaining algorithm
+# alpha should be a proposition symbol
+
+symbols: A, B, L, M, P, Q, R1, R2, R3, R4, R5, R6;
+
+relations:
+	R1 := P => Q;
+	R2 := L & M => P;
+	R3 := B & L => M;
+	R4 := A & P => L;
+	R5 := A & B => L;
+	R6 := A & B;
+
+KB: R1 & R2 & R3 & R4 & R5 & R6;
+
+alpha: Q;

@@ -1,4 +1,9 @@
 # lexical rule
+# ----------------------------------
+# usage:
+# [%] [name] [string]...
+# [$] [name] [regular expression]
+# ----------------------------------
 
 % reserve_words symbols relations KB alpha
 % operators ! <=> => := ( ) ; | & : ,

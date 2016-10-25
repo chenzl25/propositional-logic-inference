@@ -6,6 +6,9 @@
 #include "clone_visitor.h"
 #include <iostream>
 #include <set>
+#include <map>
+#include <queue>
+
 void remove_relation_from_symbol(SymbolList* symbol_list, 
 							  								 RelationList* relation_list) {
 	for (int i = 0; i < symbol_list->_symbol_vec.size();) {
@@ -199,3 +202,89 @@ bool resolution(SymbolList* symbol_list,
 	}
 }
 
+std::set<std::string> and_collector(AndSentence* s) {
+	std::set<std::string> result;
+	if (s->_sentence1->type() == AND) {
+		std::set<std::string> and_set = and_collector(dynamic_cast<AndSentence*>(s->_sentence1));
+		for (auto s : and_set) {
+			result.insert(s);
+		}
+	} else if (s->_sentence1->type() == ATOMIC) {
+		result.insert(*(dynamic_cast<AtomicSentence*>(s->_sentence1)->_symbol));
+	} else {
+		std::cout << "and_collector error" << std::endl;
+	}
+	if (s->_sentence2->type() == AND) {
+		std::set<std::string> and_set = and_collector(dynamic_cast<AndSentence*>(s->_sentence2));
+		for (auto s : and_set) {
+			result.insert(s);
+		}
+	} else if (s->_sentence2->type() == ATOMIC) {
+		result.insert(*(dynamic_cast<AtomicSentence*>(s->_sentence2)->_symbol));
+	} else {
+		std::cout << "and_collector error" << std::endl;
+	}
+	return result;
+}	
+
+bool forward_chaining(SymbolList* symbol_list, 
+										  RelationList* relation_list, 
+										  Sentence* KB, 
+										  Sentence* alpha) {
+	std::map<ImplySentence*, int> count;
+	std::set<std::string> inferred;
+	std::queue<std::string> agenda;
+	std::map<ImplySentence*, std::set<std::string> > premise;
+	// we assume relation_list suitable for forwward_chaining algorithm
+	// that is all the KB is in relation_list
+	for (int i = 0; i < relation_list->_relation_vec.size(); i++) {
+		Sentence* s = relation_list->_relation_vec[i]->_sentence;
+		switch (s->type()) {
+			case AND: {
+				std::set<std::string> and_set = and_collector(dynamic_cast<AndSentence*>(s));
+				for (auto it : and_set) 
+					agenda.push(it);
+				break;
+			}
+			case ATOMIC: {
+				std::cout << *(dynamic_cast<AtomicSentence*>(s)->_symbol) << std::endl;
+				agenda.push(*(dynamic_cast<AtomicSentence*>(s)->_symbol));
+				break;
+			}
+			case IMPLY: {
+				ImplySentence* is = dynamic_cast<ImplySentence*>(s);
+				std::set<std::string> and_set;
+				if (is->_sentence1->type() == ATOMIC) {
+					and_set.insert(*(dynamic_cast<AtomicSentence*>(is->_sentence1)->_symbol));
+				} else {
+					and_set = and_collector(dynamic_cast<AndSentence*>(is->_sentence1));
+				}
+				premise[is] = and_set;
+				count[is] = and_set.size();
+				break;
+			}
+			default:
+				std::cout << "error type in forward_chaining" << std::endl;
+				return false;
+		}
+	}
+
+	std::string q = *(dynamic_cast<AtomicSentence*>(alpha)->_symbol);
+	while (!agenda.empty()) {
+		std::string p = agenda.front();
+		agenda.pop();
+		// std::cout << p << std::endl;
+		if (p == q) return true;
+		if (inferred.count(p) == 0) {
+			inferred.insert(p);
+			for (auto it : premise) {
+				if (it.second.count(p) != 0) {
+					count[it.first]--;
+					if (count[it.first] == 0) 
+						agenda.push(*(dynamic_cast<AtomicSentence*>(it.first->_sentence2)->_symbol));
+				}
+			}
+		}
+	}
+	return false;
+}

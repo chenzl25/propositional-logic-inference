@@ -96,8 +96,23 @@ void Interpreter::execute() {
   if (!semantic_check()) {
     return;
   }
-  std::cout << "result: " << tt_entails(_symbol_list, _relation_list, _KB, _alpha) << std::endl;
-  std::cout << "result: " << resolution(_symbol_list, _relation_list, _KB, _alpha) << std::endl;
+  std::cout << "enter number:" << std::endl;
+  std::cout << "[1]: model checking" << std::endl;
+  std::cout << "[2]: resolution" << std::endl;
+  std::cout << "[3]: forward chaining" << std::endl;
+  int n;
+  std::cin >> n;
+  switch (n) {
+    case 1:
+      std::cout << "result: " << tt_entails(_symbol_list, _relation_list, _KB, _alpha) << std::endl;
+      break;
+    case 2:
+      std::cout << "result: " << resolution(_symbol_list, _relation_list, _KB, _alpha) << std::endl;
+      break;
+    case 3:
+      std::cout << "result: " << forward_chaining(_symbol_list, _relation_list, _KB, _alpha) << std::endl;
+      break;
+  }
 }
 
 } // end of namespace Logic

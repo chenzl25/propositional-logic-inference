@@ -36,5 +36,5 @@ re_parse.o: lexer/src/re_parse.h
 main.o:
 
 clean:
-	-rm -f $(OBJS) myyacc myyacc.output
+	-rm -f $(OBJS) myyacc
 	-rm -rf dist

@@ -1,3 +1,5 @@
+# to test model-checking
+
 symbols: P11, W11, B12, B21, P13, P22, S21, S12, W31, W22, P31, W13, R1, R2, R3, R4, R5;
 
 relations: 
